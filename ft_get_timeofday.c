@@ -23,5 +23,5 @@ int get_time()
     struct timeval v;
     if (gettimeofday(&v, NULL) == -1)
         return (perror("gettmieofday"), -1);
-    return (v.tv_usec);
+    return (v.tv_usec % 1000);
 }

@@ -1,7 +1,7 @@
 NAME=philo
 CC=cc
-UTILS= ph_atoi.c ph_putstr_fd.c ph_errors.c ph_lstadd_back_bonus.c ph_lstadd_front_bonus.c ph_lstclear_bonus.c\
-		ph_lstdelone_bonus.c ph_lstlast_bonus.c ph_lstnew_bonus.c ph_lstsize_bonus.c ft_get_timeofday.c philo_utils1.c
+UTILS= ph_atoi.c ph_putstr_fd.c ph_errors.c ft_get_timeofday.c ph_utils1.c\
+		ph_utils2.c ph_lstutils1.c ph_lstutils2.c
 FILES= $(UTILS) philo.c
 OFILES=$(FILES:.c=.o)
 INCLUDES=philo.h

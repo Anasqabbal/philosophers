@@ -1,30 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ph_lstsize_bonus.c                                 :+:      :+:    :+:   */
+/*   philo_utils2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: anqabbal <anqabbal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/16 14:56:35 by anqabbal          #+#    #+#             */
-/*   Updated: 2024/08/11 18:08:12 by anqabbal         ###   ########.fr       */
+/*   Created: 2024/08/17 18:05:36 by anqabbal          #+#    #+#             */
+/*   Updated: 2024/08/18 10:19:11 by anqabbal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	ph_lstsize(t_list *lst)
+int ph_mutext_destroy(t_list *p)
 {
-	int		i;
-	t_list	*cur;
-
-	if (lst == NULL)
-		return (0);
-	cur = lst;
-	i = 0;
-	while (cur != NULL)
-	{
-		i++;
-		cur = cur->next;
-	}
-	return (i);
+    while(p)
+    {
+        pthread_mutex_destroy(&p->mutex);
+        p = p->next;
+    }
+    return (0);
 }
