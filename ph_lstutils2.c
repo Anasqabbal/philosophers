@@ -6,7 +6,7 @@
 /*   By: anqabbal <anqabbal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 10:23:50 by anqabbal          #+#    #+#             */
-/*   Updated: 2024/08/18 21:19:00 by anqabbal         ###   ########.fr       */
+/*   Updated: 2024/08/24 12:05:08 by anqabbal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,5 +38,8 @@ t_list	*ph_lstnew(void *content)
 	arr->content = content;
 	arr->next = NULL;
 	arr->a = NULL;
+	arr->mutex = malloc(sizeof(pthread_mutex_t));
+	if (!arr->mutex)
+		return (NULL);
 	return (arr);
 }

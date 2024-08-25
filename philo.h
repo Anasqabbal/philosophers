@@ -6,7 +6,7 @@
 /*   By: anqabbal <anqabbal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 11:15:02 by anqabbal          #+#    #+#             */
-/*   Updated: 2024/08/18 20:56:38 by anqabbal         ###   ########.fr       */
+/*   Updated: 2024/08/25 17:10:11 by anqabbal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,9 @@ typedef pthread_mutex_t pth_m_t;
 typedef struct s_args
 {
     int num_of_ph;
-    int tm_to_eat;
-    int tm_to_sle;
-    int tm_to_die;
+    long tm_to_eat;
+    long tm_to_sle;
+    long tm_to_die;
     int nb_of_mls;
     int ac;
 }   t_args;
@@ -34,18 +34,21 @@ typedef struct s_args
 typedef struct s_list
 {
     void            *content;
-    pthread_mutex_t mutex;
+    pthread_mutex_t *mutex;
+    pthread_mutex_t *pre_ra;
     t_args          *a;
     pthread_t       id;
     int             in_mutex;
     int             nb;
-    int             sta_ea;
+    long             sta_ea;
     int             wait;
     int             count;
-    int             cu_time;
+    long             sta_sim;
     int             ind;
     struct s_list   *next;
 } t_list;
+
+
 
 void	*hold_ptr(void *pt, int get);
 int     ph_atoi(const char *str, int *ind);
@@ -60,11 +63,12 @@ t_list  *ph_lstlast(t_list *lst);
 t_list  *ph_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 t_list  *ph_lstnew(void *content);
 int     ph_lstsize(t_list *lst);
-int    get_time();
+long    get_time();
 int     cal_time(int old, int new);
 void	ft_sleeping(t_list *h);
 void    ft_eating(t_list *h);
 void	ft_ready(t_list *h);
 void    ft_thinking(t_list *h);
+void creat_list(t_args *a, t_list **head);
 
 #endif

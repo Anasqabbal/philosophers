@@ -18,10 +18,10 @@ int cal_time(int old, int new)
     return (new - old);
 }
 
-int get_time()
+long get_time()
 {
     struct timeval v;
     if (gettimeofday(&v, NULL) == -1)
         return (perror("gettmieofday"), -1);
-    return (v.tv_usec % 1000);
+    return ((v.tv_sec * 1000) + v.tv_usec / 1000);
 }
