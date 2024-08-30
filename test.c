@@ -1,40 +1,34 @@
 #include "philo.h"
 
-int start_test(char **av)
+void find_usleep(long time)
 {
-    t_args ph;
-    int ind;
+    struct timeval start, end;
+    long res;
+    long diff;
 
-    (void)av;
-    ind = 0;
-    printf("I m here\n");
-    ph.num_of_ph = ph_atoi(av[1], &ind);
-    if (ind)
-        return (printf("invalid argument in the number of threads\n"), -1);
-    ph.tm_to_die = ph_atoi(av[2], &ind);
-    if (ind)
-        return (printf("invalid argument in the time of the day argument\n"), -1);
-    ph.tm_to_eat = ph_atoi(av[3], &ind);
-    if (ind)
-        return (printf("invalid argument in the time to eat argumetn\n"), -1);
-    ph.tm_to_sle = ph_atoi(av[4], &ind);
-    if (ind)
-        return (printf("invalid argument in time to sleep argumetn\n"), -1);
-
-    printf("numbers of philosophers  == %d\n", ph.num_of_ph);
-    printf("time to die  == %d\n", ph.tm_to_die);
-    printf("time to eat  == %d\n", ph.tm_to_eat);
-    printf("time to sleep  == %d\n", ph.tm_to_sle);
-    return (0);
+    diff = 0;
+    gettimeofday(&start, NULL);
+    printf("the time before  with seconds %ld\n", start.tv_sec * 1000000L + start.tv_usec);
+    printf("the time with ms == %d\n", start.tv_usec);
+    int i = 0;
+    while(1)
+    {
+        gettimeofday(&end, NULL);
+        diff = time - ((end.tv_sec * 1000000L + end.tv_usec) - (start.tv_sec * 1000000L + start.tv_usec));
+        if (diff > 1000)
+            usleep(500);
+        else
+            break;
+    }
+    gettimeofday(&end, NULL);
+    printf("the time after %d\n", end.tv_usec);
+    printf("the diff %d\n", end.tv_usec - start.tv_usec);
 }
 
 int main(int ac, char **av)
 {
-    if (ac == 1)
-        return (printf("entrer a valid arguments\n"), 1);
-    else
-    {
-        if (start_test(av) == -1)
-            return (printf("error\n"), 1);
-    }
+    long res;
+    if (ac)
+        res = atoi(av[1]) * 1000;
+    find_usleep(res);
 }

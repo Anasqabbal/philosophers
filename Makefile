@@ -6,7 +6,8 @@ FILES= $(UTILS) philo.c
 OFILES=$(FILES:.c=.o)
 INCLUDES= philo.h
 F= -fsanitize=thread -g
-CFLAGS= -Wall -Wextra -Werror $F -pthread
+FF= -g -fsanitize=address 
+CFLAGS= -Wall -Wextra -Werror -pthread
 
 all : $(NAME)
 
