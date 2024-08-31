@@ -6,11 +6,35 @@
 /*   By: anqabbal <anqabbal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 10:23:50 by anqabbal          #+#    #+#             */
-/*   Updated: 2024/08/30 13:07:44 by anqabbal         ###   ########.fr       */
+/*   Updated: 2024/08/31 13:20:52 by anqabbal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+long get_elapsed_time_microseconds(struct timeval start, struct timeval end)
+{
+    return (end.tv_sec - start.tv_sec) * 1000000L + (end.tv_usec - start.tv_usec);
+}
+
+void pph_usleep(long usec) {
+    struct timeval start, current;
+    long elapsed;
+    long rem;
+
+	elapsed = 0;
+    gettimeofday(&start, NULL);
+    while (elapsed < usec)
+	{
+        gettimeofday(&current, NULL);
+        elapsed = get_elapsed_time_microseconds(start, current);
+        rem = usec - elapsed;
+
+        if (rem > 1000) 
+            usleep(rem / 2);
+        
+    }
+}
 
 int	ph_lstsize(t_list *lst)
 {
