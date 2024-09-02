@@ -3,6 +3,7 @@
         "locale": "c",
         "__mutex_base": "c",
         "iterator": "c",
-        "ios": "c"
+        "ios": "c",
+        "bitset": "c"
     }
 }

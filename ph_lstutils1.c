@@ -6,7 +6,7 @@
 /*   By: anqabbal <anqabbal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 10:22:07 by anqabbal          #+#    #+#             */
-/*   Updated: 2024/08/18 10:23:22 by anqabbal         ###   ########.fr       */
+/*   Updated: 2024/09/01 13:26:58 by anqabbal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ void	ph_lstadd_front(t_list **lst, t_list *new)
 		*lst = new;
 	}
 }
+
 void	ph_lstdelone(t_list *lst, void (*del)(void *))
 {
 	if (!lst || !del)

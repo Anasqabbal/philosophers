@@ -6,34 +6,60 @@
 /*   By: anqabbal <anqabbal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 10:23:50 by anqabbal          #+#    #+#             */
-/*   Updated: 2024/08/31 13:20:52 by anqabbal         ###   ########.fr       */
+/*   Updated: 2024/09/01 17:01:10 by anqabbal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-long get_elapsed_time_microseconds(struct timeval start, struct timeval end)
+void	ph_wait(t_list *p)
 {
-    return (end.tv_sec - start.tv_sec) * 1000000L + (end.tv_usec - start.tv_usec);
+	int	i;
+
+	i = -1;
+	while (p && ++i < p->a->num_of_ph)
+	{
+		pthread_detach(p->id);
+		p = p->next;
+		if (p && i == p->a->num_of_ph)
+			break ;
+	}
+	i = -1;
+	p = hold_ptr(NULL, 1);
+	while (++i < p->a->num_of_ph)
+	{
+		pthread_mutex_destroy(p->mutex);
+		p = p->next;
+	}
 }
 
-void pph_usleep(long usec) {
-    struct timeval start, current;
-    long elapsed;
-    long rem;
+static long	get_subs_of_val(struct timeval start, struct timeval end)
+{
+	long	sec;
+	long	usec;
+
+	sec = end.tv_sec - start.tv_sec;
+	usec = end.tv_usec - start.tv_usec;
+	return ((sec * 1000000L) + usec);
+}
+
+void	pph_usleep(long usec)
+{
+	struct timeval	start;
+	struct timeval	current;
+	long			elapsed;
+	long			rem;
 
 	elapsed = 0;
-    gettimeofday(&start, NULL);
-    while (elapsed < usec)
+	gettimeofday(&start, NULL);
+	while (elapsed < usec)
 	{
-        gettimeofday(&current, NULL);
-        elapsed = get_elapsed_time_microseconds(start, current);
-        rem = usec - elapsed;
-
-        if (rem > 1000) 
-            usleep(rem / 2);
-        
-    }
+		gettimeofday(&current, NULL);
+		elapsed = get_subs_of_val(start, current);
+		rem = usec - elapsed;
+		if (rem > 1000)
+			usleep(rem / 2);
+	}
 }
 
 int	ph_lstsize(t_list *lst)
@@ -52,6 +78,7 @@ int	ph_lstsize(t_list *lst)
 	}
 	return (i);
 }
+
 t_list	*ph_lstnew(void *content)
 {
 	t_list	*arr;

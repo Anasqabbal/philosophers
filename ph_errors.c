@@ -12,9 +12,37 @@
 
 #include "philo.h"
 
-void    ph_error(char *str)
+long	get_time(void)
 {
-    ph_putstr_fd("your argument: ", 2);
-    ph_putstr_fd(str, 2);
-    ph_putstr_fd(": is invalid\n", 2);
+	struct timeval	v;
+
+	if (gettimeofday(&v, NULL) == -1)
+		return (perror("gettmieofday"), -1);
+	return ((v.tv_sec * 1000) + v.tv_usec / 1000);
+}
+
+static void	ph_putchar_fd(char c, int fd)
+{
+	write(fd, &c, 1);
+}
+
+void	ph_putstr_fd(char *s, int fd)
+{
+	int	i;
+
+	i = 0;
+	if (fd < 0 || !s)
+		return ;
+	while (*(s + i))
+	{
+		ph_putchar_fd(*(s + i), fd);
+		i++;
+	}
+}
+
+void	ph_error(char *str)
+{
+	ph_putstr_fd("your argument: ", 2);
+	ph_putstr_fd(str, 2);
+	ph_putstr_fd(": is invalid\n", 2);
 }

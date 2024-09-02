@@ -6,7 +6,7 @@
 /*   By: anqabbal <anqabbal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 13:42:34 by anqabbal          #+#    #+#             */
-/*   Updated: 2024/08/12 11:45:37 by anqabbal         ###   ########.fr       */
+/*   Updated: 2024/09/01 13:04:58 by anqabbal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static int	a_return_with(const char *str, long long res, int sign, int *ind)
 		return (*ind = 0, res * sign);
 	}
 	else
-		return (*ind = 1 , 1);
+		return (*ind = 1, 1);
 }
 
 static int	return_check(const char *str, long long res, int *ind, int i)
@@ -67,6 +67,6 @@ int	ph_atoi(const char *str, int *ind)
 	i = 0;
 	res = 0;
 	while ((str[i] >= 9 && str[i] <= 13) || str[i] == 32)
-			i++;
+		i++;
 	return (return_check(str, res, ind, i));
 }

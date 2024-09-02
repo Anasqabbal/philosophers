@@ -1,9 +1,9 @@
 NAME=philo
 CC=cc
-UTILS= ph_atoi.c ph_putstr_fd.c ph_errors.c ft_get_timeofday.c ph_utils1.c\
-		ph_lstutils1.c ph_lstutils2.c prepare_philosophers.c philo.c
+UTILS= ph_atoi.c ph_utils2.c ph_errors.c ph_utils1.c\
+		ph_lstutils1.c ph_lstutils2.c prepare_philosophers.c
 
-FILES= $(UTILS)
+FILES= philo.c $(UTILS)
 OFILES=$(FILES:.c=.o)
 INCLUDES= philo.h
 F= -fsanitize=thread -g

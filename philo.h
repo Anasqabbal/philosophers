@@ -6,7 +6,7 @@
 /*   By: anqabbal <anqabbal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 11:15:02 by anqabbal          #+#    #+#             */
-/*   Updated: 2024/08/31 17:59:58 by anqabbal         ###   ########.fr       */
+/*   Updated: 2024/09/01 17:10:11 by anqabbal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,6 @@ t_list  *ph_lstlast(t_list *lst);
 t_list  *ph_lstnew(void *content);
 int     ph_lstsize(t_list *lst);
 long    get_time();
-int     cal_time(int old, int new);
 void	ft_sleeping(t_list *h);
 void    ft_eating(t_list *ph);
 void    ft_thinking(t_list *h);
@@ -79,5 +78,9 @@ void	initialize_struct_philo(t_args *p, char **av, int ac);
 int     creat_philosophers(t_list *ph);
 int     check_arguments(char **av);
 void    *test(void *t);
+void	ph_wait(t_list *p);
+void    to_set(pthread_mutex_t *mtx, int *var, int val);
+int     to_check(pthread_mutex_t *mtx, int *var, int val);
+
 
 #endif
