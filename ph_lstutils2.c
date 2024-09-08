@@ -6,7 +6,7 @@
 /*   By: anqabbal <anqabbal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 10:23:50 by anqabbal          #+#    #+#             */
-/*   Updated: 2024/09/01 17:01:10 by anqabbal         ###   ########.fr       */
+/*   Updated: 2024/09/07 15:47:33 by anqabbal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,21 @@ static long	get_subs_of_val(struct timeval start, struct timeval end)
 	return ((sec * 1000000L) + usec);
 }
 
+void    ft_usleep(long long tt_sleep)
+{
+    long long    start;
+
+    start = get_time();
+    while (get_time() - start < tt_sleep)
+        usleep(500);
+}
+
 void	pph_usleep(long usec)
 {
 	struct timeval	start;
 	struct timeval	current;
-	long			elapsed;
-	long			rem;
+	long long	elapsed;
+	long long	rem;
 
 	elapsed = 0;
 	gettimeofday(&start, NULL);

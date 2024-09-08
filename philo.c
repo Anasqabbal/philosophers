@@ -6,7 +6,7 @@
 /*   By: anqabbal <anqabbal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 11:12:51 by anqabbal          #+#    #+#             */
-/*   Updated: 2024/09/01 17:12:20 by anqabbal         ###   ########.fr       */
+/*   Updated: 2024/09/08 11:57:15 by anqabbal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,20 +19,15 @@ void	*ft_monitor(void *p)
 	ph = p;
 	while(ph)
 	{
+		// if (!to_check(ph->a->to_check, &ph->count, 0))
+		// 	break ;
 		pthread_mutex_lock(ph->a->to_check);
-		if (!ph->count)
-		{
-			pthread_mutex_unlock(ph->a->to_check);
-			break ;
-		}
 		if (get_time() - ph->sta_ea > ph->a->tm_to_die)
 		{
-			
 			pthread_mutex_unlock(ph->a->to_check);
-			printf("%ld %d is died\n", get_time() - ph->sta_sim, ph->nb);
-			pthread_mutex_lock(ph->a->to_check);
-			ph->a->die = 0;
-			pthread_mutex_unlock(ph->a->to_check);
+			printf("%ld %d died\n", get_time() - ph->sta_sim, ph->nb);
+			to_set(ph->a->to_check, &ph->a->die, 0, "ft_monitor");
+			pthread_mutex_lock(ph->a->to_print);
 			return (p);
 		}
 		pthread_mutex_unlock(ph->a->to_check);
@@ -41,15 +36,22 @@ void	*ft_monitor(void *p)
 	return (p);
 }
 
-int check_death(t_list *ph, t_args *a,void (*f)(t_list *))
+int check_death(t_list *ph, t_args *a, void (*f)(t_list *))
 {
-	(void) a;
-	pthread_mutex_lock(a->to_check);
+	(void)a;
+	pthread_mutex_lock(ph->a->to_check);
 	if (ph->a->die == 0)
-		return (pthread_mutex_unlock(ph->a->to_check), 0);
-	pthread_mutex_unlock(a->to_check);
+		return (pthread_mutex_unlock(ph->a->to_check), 1);
+	pthread_mutex_unlock(ph->a->to_check);
 	f(ph);
 	return (0);
+}
+
+void ft_putstr(char *s)
+{
+	int  i = -1;
+	while (s[++i])
+		write(1, &s[i], 1);
 }
 void *test(void *t)
 {
@@ -72,7 +74,7 @@ void *test(void *t)
 		if (!to_check(ph->a->to_check, &ph->a->die, 0))
 			break ;
 		if (ph->a->ac == 6)
-			to_set(ph->a->to_check, &ph->count, ph->count - 1);
+			to_set(ph->a->to_check, &ph->count, ph->count - 1, "inside routine func\n");
 	}
 	return (t);
 }
@@ -84,20 +86,26 @@ static int	start_philo(char **av, int ac)
 
 	ph = NULL;
 	initialize_struct_philo(&a, av, ac);
-	if (creat_list(&a, &ph) == -1)
+	if (creat_list(&a, &ph) == -1) 					 /* creat the list that will hold your philo and its data*/
 		return (-1);
-	creat_philosophers(hold_ptr(NULL, 1));
-	ft_monitor(hold_ptr(NULL, 1));
-	ph_wait(hold_ptr(NULL, 1));
-	pthread_mutex_destroy(ph->a->to_check);
+	creat_philosophers(hold_ptr(NULL, 1)); 			 /* creat the philo and send it inside the routine function */
+	ft_monitor(hold_ptr(NULL, 1));					 /* track which philo is died and which is not */
+	ph_wait(hold_ptr(NULL, 1));						 /* destroy the threads in the final */
+	// pthread_mutex_destroy(ph->a->to_check);
 	return (0);
 }
+/*
+	creat a new function printf to delay the time of execution of 
+	your philo because it is printed all at the same time
+
+*/
+
 
 int main(int ac, char **av)
 {
 	(void)ac;
 	(void)av;
-	if (ac < 5)
+	if (ac < 5 || ac > 6)
 		return (ph_putstr_fd("invalide arguments\n", 2), 1);
 	if (check_arguments(av))
 		return (1);

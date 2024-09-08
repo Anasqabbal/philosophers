@@ -6,7 +6,7 @@
 /*   By: anqabbal <anqabbal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 11:15:02 by anqabbal          #+#    #+#             */
-/*   Updated: 2024/09/01 17:10:11 by anqabbal         ###   ########.fr       */
+/*   Updated: 2024/09/08 14:54:11 by anqabbal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ typedef pthread_mutex_t pth_m_t;
 typedef struct s_args
 {
     pthread_mutex_t *to_check;
+    pthread_mutex_t *to_print;
     int     num_of_ph;
     long    tm_to_eat;
     long    tm_to_sle;
@@ -36,16 +37,15 @@ typedef struct s_args
 
 typedef struct s_list
 {
+    pthread_mutex_t *last_eat;
+    pthread_mutex_t mutex;
     void            *content;
-    pthread_mutex_t *mutex;
-    pthread_mutex_t *pre_ra;
     t_args          *a;
     pthread_t       id;
     int             fork;
     int             nb;
     int             count;
     long            sta_ea;
-    int             die;
     long            sta_sim;
     struct s_list   *next;
 } t_list;
@@ -74,12 +74,13 @@ void    ft_thinking(t_list *h);
 int     creat_list(t_args *a, t_list **head);
 void    *ft_monitor(void *p);
 void    pph_usleep(long usec) ;
+void    ft_usleep(long long  tt_sleep) ;
 void	initialize_struct_philo(t_args *p, char **av, int ac);
 int     creat_philosophers(t_list *ph);
 int     check_arguments(char **av);
 void    *test(void *t);
 void	ph_wait(t_list *p);
-void    to_set(pthread_mutex_t *mtx, int *var, int val);
+void    to_set(pthread_mutex_t *mtx, int *var, int val, char *f);
 int     to_check(pthread_mutex_t *mtx, int *var, int val);
 
 

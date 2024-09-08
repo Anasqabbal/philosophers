@@ -6,7 +6,7 @@
 /*   By: anqabbal <anqabbal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 10:22:07 by anqabbal          #+#    #+#             */
-/*   Updated: 2024/09/01 13:26:58 by anqabbal         ###   ########.fr       */
+/*   Updated: 2024/09/08 15:20:34 by anqabbal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ t_list	*ph_lstlast(t_list *lst)
 	return (cur);
 }
 
-void	ph_lstadd_back(t_list **lst, t_list *new)
+void	 ph_lstadd_back(t_list **lst, t_list *new)
 {
 	t_list	*tmp;
 
@@ -44,6 +44,7 @@ void	ph_lstadd_back(t_list **lst, t_list *new)
 	while (tmp -> next)
 		tmp = tmp -> next;
 	tmp -> next = new;
+	printf("the last address is %p\n", tmp->next);
 }
 
 void	ph_lstadd_front(t_list **lst, t_list *new)

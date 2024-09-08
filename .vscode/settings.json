@@ -4,6 +4,7 @@
         "__mutex_base": "c",
         "iterator": "c",
         "ios": "c",
-        "bitset": "c"
+        "bitset": "c",
+        "philo.h": "c"
     }
 }

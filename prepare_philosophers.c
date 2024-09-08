@@ -6,7 +6,7 @@
 /*   By: anqabbal <anqabbal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/24 11:01:35 by anqabbal          #+#    #+#             */
-/*   Updated: 2024/09/01 12:52:11 by anqabbal         ###   ########.fr       */
+/*   Updated: 2024/09/08 12:34:33 by anqabbal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,9 @@ void	initialize_struct_philo(t_args *p, char **av, int ac)
 	p->die = 1;
 	p->to_check = malloc(sizeof(pthread_mutex_t));
 	if (!p->to_check)
+		return ;
+	p->to_print = malloc(sizeof(pthread_mutex_t));
+	if (!p->to_print)
 		return ;
 	if (ac == 6)
 		p->nb_of_mls = ph_atoi(av[5], &ind);
@@ -67,13 +70,14 @@ int	creat_philosophers(t_list *ph)
 	i = 0;
 	size_t t = get_time();
 	pthread_mutex_init(ph->a->to_check, NULL);
+	pthread_mutex_init(ph->a->to_print, NULL);
 	while(ph && i < ph->a->num_of_ph)
 	{
 		pthread_mutex_init(ph->mutex, NULL);
 		ph->sta_sim = t;
 		ph->sta_ea = ph->sta_sim;
-		if (pthread_create(&ph->id, NULL, test, ph))
-			return (1);
+		// if (pthread_create(&ph->id, NULL, test, ph))
+		// 	return (1);
 		ph = ph->next;
 		i++;
 	}
