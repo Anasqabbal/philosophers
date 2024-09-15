@@ -1,15 +1,14 @@
 NAME=philo
 CC=cc
 UTILS= ph_atoi.c ph_utils2.c ph_errors.c ph_utils1.c\
-		ph_lstutils1.c ph_lstutils2.c prepare_philosophers.c
+		ph_lstutils1.c ph_lstutils2.c  ph_utils3.c prepare_philosophers.c
 
-FILES= test.c $(UTILS)
+FILES= philo.c $(UTILS)
 OFILES=$(FILES:.c=.o)
 INCLUDES= philo.h
 F= -fsanitize=thread -g
 FF= -g -fsanitize=address
-CFLAGS= -Wall -Wextra -Werror $F
-
+CFLAGS= -Wall -Wextra -Werror 
 all : $(NAME)
 
 $(NAME) : $(OFILES) $(INCLUDES)

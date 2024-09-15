@@ -6,37 +6,24 @@
 /*   By: anqabbal <anqabbal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 16:29:03 by anqabbal          #+#    #+#             */
-/*   Updated: 2024/09/08 11:55:14 by anqabbal         ###   ########.fr       */
+/*   Updated: 2024/09/15 17:03:18 by anqabbal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void one_philo(t_list *ph)
+void	one_philo(t_list *ph)
 {
-	while(1)
-	{
-		if (!to_check(ph->a->to_check, &ph->a->die, 0))
-			break ;
-	}
-	pthread_mutex_unlock(ph->mutex);
+	while (to_check(&ph->a->to_check, &ph->a->die, 0))
+		;
+	pthread_mutex_unlock(&ph->mutex);
 }
 
-void to_set(pthread_mutex_t *mtx, int *var, int val, char *f)
+void	to_set_pro(pthread_mutex_t *mtx, long *var, long val)
 {
-	(void)f;
 	pthread_mutex_lock(mtx);
 	*var = val;
 	pthread_mutex_unlock(mtx);
-}
-
-int to_check(pthread_mutex_t *mtx, int *var, int val)
-{
-	pthread_mutex_lock(mtx);
-	if (*var == val)
-		return (pthread_mutex_unlock(mtx), 0);
-	pthread_mutex_unlock(mtx);
-	return (1);
 }
 
 int	sub_check(t_list *ph)
@@ -46,69 +33,51 @@ int	sub_check(t_list *ph)
 		one_philo(ph);
 		return (1);
 	}
-	// while(!to_check(ph->a->to_check, &ph->fork, 1) && to_check(ph->a->to_check, &ph->next->fork, 0))
-	// {
-	// 	if (!to_check(ph->a->to_check, &ph->a->die, 0))
-	// 		return (1);
-	// }
 	return (0);
 }
-void ft_printf(int ind, t_list *ph, char *s)
+
+int	ft_printf(char *s, pthread_mutex_t *mtx1, pthread_mutex_t *mtx2, t_list *ph)
 {
-	(void) ind;
-	if (!to_check(ph->a->to_check, &ph->a->die, 0))
-		return ;
-	pthread_mutex_lock(ph->a->to_print);
-	printf("%ld %d %s\n", (get_time() - ph->sta_sim) , ph->nb, s);
-	pthread_mutex_unlock(ph->a->to_print);
+	if (!to_check(&ph->a->to_check, &ph->a->die, 0))
+	{
+		if (mtx1)
+			pthread_mutex_unlock(mtx1);
+		if (mtx2)
+			pthread_mutex_unlock(mtx2);
+		return (1);
+	}
+	printf("%ld %d %s\n", (get_time() - ph->sta_sim), ph->nb, s);
+	return (0);
 }
 
-/*
-typedef enum	e_stat{
-	DIED,
-	TOOK_A_FORK,
-	EATING,
-	THINKING,
-	SLEEPING,
-}	t_stat;
-t_stat philo_status
-ft_printf(DIED)
-*/
-void ft_eating(t_list *ph)
+long	*to_get_address(pthread_mutex_t *mtx, t_list *ph, int ind)
 {
-	while(!to_check(ph->a->to_check, &ph->fork, 1))
+	long	*addr;
+
+	addr = NULL;
+	pthread_mutex_lock(mtx);
+	if (ind == 0)
+		addr = &ph->sta_ea;
+	pthread_mutex_unlock(mtx);
+	return (addr);
+}
+
+void	ft_eating(t_list *ph)
+{
+	pthread_mutex_lock(&ph->mutex);
+    ft_printf("has taken a fork", &ph->mutex, NULL, ph);
+	if (ph->a->num_of_ph == 1)
 	{
-		if (!to_check(ph->a->to_check, &ph->a->die, 0))
-			return ;
-	}
-	pthread_mutex_lock(ph->mutex);
-	to_set(ph->a->to_check, &ph->fork, 1, "ft_eating");
-	if (!to_check(ph->a->to_check, &ph->a->die, 0))
-	{
-		// printf("from here 0\n");
+		one_philo(ph);
 		return ;
-	}
-	ft_printf(0, ph, "has taken a fork");
-	if (sub_check(ph))
-	{
-		// printf("from here 1\n");
-		return ;
-	}
-	pthread_mutex_lock(ph->next->mutex);
-	to_set(ph->a->to_check, &ph->next->fork, 1, "ft_eating 2");
-	if (!to_check(ph->a->to_check, &ph->a->die, 0))
-	{
-		// printf("from here 2\n");
-		return ;
-	}
-	ft_printf(1, ph, "has taken a fork");
-	pthread_mutex_lock(ph->a->to_check);
-	ph->sta_ea =  get_time();
-	pthread_mutex_unlock(ph->a->to_check);
-	ft_printf(2, ph, "is eating");
-	pph_usleep(ph->a->tm_to_eat);
-	pthread_mutex_unlock(ph->mutex);
-	to_set(ph->a->to_check, &ph->fork, 0, "ft_eating 3");
-	pthread_mutex_unlock(ph->next->mutex);
-	to_set(ph->a->to_check, &ph->next->fork, 0, "ft_eating 4");
+    }
+	pthread_mutex_lock(&ph->next->mutex);
+    ft_printf("has taken a fork", &ph->mutex, &ph->next->mutex, ph);
+	pthread_mutex_lock(&ph->last_eat);
+	ph->sta_ea = get_time();
+	pthread_mutex_unlock(&ph->last_eat);
+    ft_printf("is eating", &ph->mutex, &ph->next->mutex, ph);
+	ph_usleep(ph->a->tm_to_eat, ph);
+	pthread_mutex_unlock(&ph->mutex);
+	pthread_mutex_unlock(&ph->next->mutex);
 }

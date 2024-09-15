@@ -6,19 +6,15 @@
 /*   By: anqabbal <anqabbal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 19:38:22 by anqabbal          #+#    #+#             */
-/*   Updated: 2024/09/07 16:58:17 by anqabbal         ###   ########.fr       */
+/*   Updated: 2024/09/15 17:04:06 by anqabbal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void    ft_thinking(t_list *h)
+void	ft_thinking(t_list *ph)
 {
-	long	res;
-
-	res = h->a->tm_to_die - (h->a->tm_to_sle / 1000 + h->a->tm_to_eat / 1000);
-	if (res > 0)
-    	printf("%ld %d is thinking\n", (get_time() - h->sta_sim) , h->nb);
+    printf("%ld %d is thinking\n", get_time() - ph->sta_sim, ph->nb);
 }
 
 void	*hold_ptr(void *pt, int get)
@@ -32,8 +28,8 @@ void	*hold_ptr(void *pt, int get)
 	return (0);
 }
 
-void	ft_sleeping(t_list *h)
+void	ft_sleeping(t_list *ph)
 {
-	printf("%ld %d is sleeping\n", (get_time() - h->sta_sim) , h->nb);
-	pph_usleep(h->a->tm_to_sle);
+	ft_printf("is sleeping", NULL, NULL, ph);
+	ph_usleep(ph->a->tm_to_sle, ph);
 }
