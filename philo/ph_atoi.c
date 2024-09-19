@@ -6,33 +6,11 @@
 /*   By: anqabbal <anqabbal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 13:42:34 by anqabbal          #+#    #+#             */
-/*   Updated: 2024/09/14 14:19:17 by anqabbal         ###   ########.fr       */
+/*   Updated: 2024/09/19 08:59:33 by anqabbal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-char	*ft_strdup(const char *s1)
-{
-	int		len;
-	char	*arr;
-	int		i;
-
-	len = -1;
-	i = 0;
-	while (s1[++len])
-		;
-	arr = malloc((len + 1) * (sizeof (char)));
-	if (!arr)
-		return (0);
-	while (i < len)
-	{
-		arr[i] = s1[i];
-		i++;
-	}
-	arr[len] = '\0';
-	return (arr);
-}
 
 static void	check_sign(const char *str, int *i, int *sign)
 {
@@ -43,11 +21,12 @@ static void	check_sign(const char *str, int *i, int *sign)
 	}
 }
 
-static int	a_return_with(const char *str, long long res, int sign, int *ind)
+static long long	a_return_with(const char *str
+	, long long res, int sign, int *ind)
 {
 	if (str[0] == '\0' && sign == 1)
 	{
-		if (res * sign == 0)
+		if (res * sign == 0 || res < 0 || (res * sign) < 0)
 			return (*ind = 1, 1);
 		return (*ind = 0, res * sign);
 	}
@@ -55,7 +34,8 @@ static int	a_return_with(const char *str, long long res, int sign, int *ind)
 		return (*ind = 1, 1);
 }
 
-static int	return_check(const char *str, long long res, int *ind, int sign)
+static long long	return_check(const char *str
+	, long long res, int *ind, int sign)
 {
 	long long	old_res;
 	int			i;
@@ -82,7 +62,7 @@ static int	return_check(const char *str, long long res, int *ind, int sign)
 	return (a_return_with(str + i, res, sign, ind));
 }
 
-int	ph_atoi(const char *str, int *ind)
+long long	ph_atoi(const char *str, int *ind)
 {
 	int			i;
 	long long	res;

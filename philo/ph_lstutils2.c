@@ -6,7 +6,7 @@
 /*   By: anqabbal <anqabbal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 10:23:50 by anqabbal          #+#    #+#             */
-/*   Updated: 2024/09/15 14:35:40 by anqabbal         ###   ########.fr       */
+/*   Updated: 2024/09/18 14:17:43 by anqabbal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ void	ph_wait(t_list *ph)
 	i = -1;
 	while (ph && ++i < ph->a->num_of_ph)
 	{
-		pthread_join(ph->id, NULL);
+		if (pthread_join(ph->id, NULL))
+			pthread_detach(ph->id);
 		ph = ph->next;
 		if (ph && i == ph->a->num_of_ph)
 			break ;
@@ -33,40 +34,12 @@ void	ph_wait(t_list *ph)
 	}
 }
 
-// static long	get_subs_of_val(struct timeval start, struct timeval end)
-// {
-// 	long	sec;
-// 	long	usec;
-
-// 	sec = end.tv_sec - start.tv_sec;
-// 	usec = end.tv_usec - start.tv_usec;
-// 	return ((sec * 1000000L) + usec);
-// }
-
-int get_len(long nb, long nb1)
-{
-	long sle;
-	int		i;
-
-	i = 0;
-	if (nb > nb1)
-		sle = nb;
-	else
-		sle = nb1;
-	while(sle)
-	{
-		i++;
-		sle /= 10;
-	}
-	return ((i / 3));
-}
-
 void	ph_usleep(long usec, t_list *ph)
 {
-	long            str;
+	long	str;
 
-    str = get_time();
-    usec /= 1000;
+	str = get_time();
+	usec /= 1000;
 	while (get_time() - str < usec)
 	{
 		if (!to_check(&ph->a->to_check, &ph->a->die, 0))

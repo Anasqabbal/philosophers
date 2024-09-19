@@ -6,7 +6,7 @@
 /*   By: anqabbal <anqabbal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 19:38:22 by anqabbal          #+#    #+#             */
-/*   Updated: 2024/09/15 17:04:06 by anqabbal         ###   ########.fr       */
+/*   Updated: 2024/09/18 13:23:03 by anqabbal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	ft_thinking(t_list *ph)
 {
-    printf("%ld %d is thinking\n", get_time() - ph->sta_sim, ph->nb);
+	printf("%ld %d is thinking\n", get_time() - ph->sta_sim, ph->nb);
 }
 
 void	*hold_ptr(void *pt, int get)

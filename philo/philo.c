@@ -6,7 +6,7 @@
 /*   By: anqabbal <anqabbal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 11:12:51 by anqabbal          #+#    #+#             */
-/*   Updated: 2024/09/15 16:44:24 by anqabbal         ###   ########.fr       */
+/*   Updated: 2024/09/19 08:58:57 by anqabbal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	check_death(t_list *ph, void (*f)(t_list *))
 	return (0);
 }
 
-void	*test(void *t)
+void	*ft_routine(void *t)
 {
 	t_list	*ph;
 	int		i;
@@ -71,17 +71,17 @@ static int	start_philo(char **av, int ac)
 
 	ph = NULL;
 	i = -1;
-	initialize_struct_philo(&a, av, ac);
+	if (initialize_struct_philo(&a, av, ac) < 0)
+		return (-1);
 	if (creat_list(&a, &ph) == -1)
 		return (-1);
-	creat_philosophers(hold_ptr(NULL, 1));
+	if (creat_philosophers(hold_ptr(NULL, 1)) < 0)
+		return (ph_lstclear(&ph, ph->a->num_of_ph), -1);
 	ft_monitor(hold_ptr(NULL, 1));
 	ph_wait(hold_ptr(NULL, 1));
-	pthread_mutex_destroy(&ph->a->to_check);
-	pthread_mutex_destroy(&ph->a->to_print);
-	pthread_mutex_destroy(&ph->a->to_count);
+	init_des_global_mutex(&a, 1);
 	ph = hold_ptr(NULL, 1);
-	while(++i < a.num_of_ph)
+	while (++i < a.num_of_ph)
 	{
 		pthread_mutex_destroy(&ph->last_eat);
 		ph = ph->next;
@@ -89,21 +89,17 @@ static int	start_philo(char **av, int ac)
 	return (0);
 }
 
-void f()
-{
-	system("leaks philo");
-}
-
 int	main(int ac, char **av)
 {
 	t_list	*ph;
-	// atexit(f);
+
 	if (ac < 5 || ac > 6)
 		return (ph_putstr_fd("invalide arguments\n", 2), 1);
 	if (check_arguments(av))
 		return (1);
-	start_philo(av, ac);
+	if (start_philo(av, ac) < 0)
+		return (1);
 	ph = hold_ptr(NULL, 1);
-	ph_lstclear(&ph, free, ph->a->num_of_ph);
+	ph_lstclear(&ph, ph->a->num_of_ph);
 	return (0);
 }

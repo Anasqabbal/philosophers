@@ -6,16 +6,14 @@ UTILS= ph_atoi.c ph_utils2.c ph_errors.c ph_utils1.c\
 FILES= philo.c $(UTILS)
 OFILES=$(FILES:.c=.o)
 INCLUDES= philo.h
-F= -fsanitize=thread -g
-FF= -g -fsanitize=address
-CFLAGS= -Wall -Wextra -Werror 
+CFLAGS= -Wall -Wextra -Werror
 all : $(NAME)
 
-$(NAME) : $(OFILES) $(INCLUDES)
+$(NAME) : $(OFILES)
 	$(CC) $(CFLAGS) $(OFILES) -o $@
 
 .%o : .%.c $(INCLUDES)
-	$(CC) $(CFLAGS) $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean :
 	rm -f $(OFILES)
@@ -25,3 +23,4 @@ fclean : clean
 
 re : fclean all
 
+.PHONY : clean
